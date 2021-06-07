@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table>
+    {% for y in board %}
+        <tr>
+            {% for x in y %}
+                <th>{{x}}</th>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+{% block usersubmit %}
+    <form id="boggle-form" >
+        <input type="text" id="user-guess" name="guess" 
+        value="Make a guess" onfocus="this.value=''">
+        <button>Submit</button>
+    </form>
+{% endblock %}
