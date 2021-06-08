@@ -1,42 +1,66 @@
 class Boggle {
-    constructor(){
-        //$("#user-guess", )
-        //add evt listener that listens to when user hits submit btn
-        //jquery and find the id of the submit btn
-        //this.$word = $("#user-guess").val()//maybe bad code, will change by the time you need to make a f() call later
-        $("#boggle-form").on("submit", this.getUserWord)//compare user word input 
+    constructor(time=20){
+        this.score = 0
+        this.userPlays = 0
+
+        setTimeout( () => {
+            this.disableGame = true
+            alert(`The Game has Ended`)
+            this.updateScoresnPlays()
+        }, time*1000)
+
+        
+    
+        $("#boggle-form").on("submit", this.getUserWord.bind(this))//compare user word input 
         //to backend via axios request using a method below
         //this.getUserWord.bind(this) requires a bind otherwise the evt will refer to other stuff
    
-        
-        //$("#boggle-form").on("submit", this.getUserWord)
 
     }
 
-    /** */
-    // async wordEvtListener(evt){
-        
-    // }
 
-    async getUserWord(evt){
+    getScore(word){
+        this.score+=word.length
+    }
+
+    updateScoreUI(){
+        $("#score").text(`CURRENT SCORE:${this.score}`)
+    }
+
+    async getUserWord(evt){//called via an evt listener so we need to bind; see the constructor
         evt.preventDefault()
+        if (this.disableGame) return
+
+        this.userPlays++
+
         const word = $("#user-guess").val().toLowerCase()
         if(!word) return
         
         
         const reponse = await axios.get("/check_word",{params: {"word": word}})
-        console.log(reponse)
 
-        if(reponse.data.result == "ok")
+        if(reponse.data.result == "ok"){
             alert(`Nice! "${word}" is on the board`)
-        if(reponse.data.result == "not-on-board")
+            this.getScore(word)//see the bind in the constructor
+            this.updateScoreUI()
+        }
+        if(reponse.data.result == "not-on-board"){
             alert(`Sorry "${word}" is not on the board`)
-        if(reponse.data.result == "not-word")
+        }
+        if(reponse.data.result == "not-word"){
             alert(`Sorry "${word}" is not a word`)                        
+        }
+
+
     }
-    /* axios.post('/check_word') */
+    
 
-
+    async updateScoresnPlays(){
+        const reponse = await axios.post("/update_score_plays", {
+            "score": this.score, 
+            "plays": this.userPlays
+        })
+    }
     //listen to an event after user submits,make an ajax request 
     //and then update the DOM
 }

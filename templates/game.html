@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <section class="records">
+        HIGHSCORE:
+        <span id="highscore">{{highscore}}</span>
+        <br>
+        WITH <span id="plays">{{plays}}</span> PLAYS
+    </section>
+    <br>
+    <div id="score">CURRENT SCORE:0</div>
     <table>
     {% for y in board %}
         <tr>
