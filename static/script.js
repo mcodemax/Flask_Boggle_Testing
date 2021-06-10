@@ -2,6 +2,7 @@ class Boggle {
     constructor(time=20){
         this.score = 0
         this.userPlays = 0
+        this.words = new Set()
 
         setTimeout( () => {
             this.disableGame = true
@@ -36,6 +37,12 @@ class Boggle {
         const word = $("#user-guess").val().toLowerCase()
         if(!word) return
         
+        if(!this.words.has(word)){
+            this.words.add(word)
+        }else{
+            return alert(`You already guessed this word`)
+        }
+
         
         const reponse = await axios.get("/check_word",{params: {"word": word}})
 
