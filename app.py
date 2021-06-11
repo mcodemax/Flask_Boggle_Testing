@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 boggle_game = Boggle()
 
-app.config["SECRET_KEY"] = "maxcode"
+app.config["SECRET_KEY"] = "maxcode1"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
@@ -19,14 +19,6 @@ def generate_board():
     
     return render_template("game.html", board=session["board"], highscore=highscore, plays=plays)
 
-@app.route('/', methods=["POST"])
-def get_user_guess():
-    # do something that gets the users word
-    user_word = request.form.get("guess")# gets name="user_word" from html
-
-
-    
-    return redirect('/')
 
 @app.route('/check_word')
 def check_word():
@@ -61,10 +53,6 @@ def update_score_plays():
     # pdb.set_trace()
 
     return redirect('/')
-    
-    # if newrecordReturned > oldrecordinSession :
-    #     session["highscore"] = jsonthing_with_score
-    #     session["plays"] = jsonthing_with_plays
     
     #store high score w/ number of plays on backend and render it somewhere later
     #make an if statement to compare if it beat the old record.

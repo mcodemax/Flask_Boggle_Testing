@@ -1,5 +1,5 @@
 class Boggle {
-    constructor(time=20){
+    constructor(time=60){//time is in seconds
         this.score = 0
         this.userPlays = 0
         this.words = new Set()
